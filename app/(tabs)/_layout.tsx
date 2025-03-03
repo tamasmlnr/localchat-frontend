@@ -29,18 +29,9 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="account"
         options={{
-          title: "Explore",
-          tabBarIcon: ({ color, size }) => (
-            <Icon source="compass" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
+          title: "Account",
           tabBarIcon: ({ color, size }) => (
             <Icon source="account" color={color} size={size} />
           ),

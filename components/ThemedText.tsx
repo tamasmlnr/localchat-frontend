@@ -1,31 +1,31 @@
+import { theme } from '@/theme/theme';
 import { Text, type TextProps, StyleSheet } from 'react-native';
-
-import { useThemeColor } from '@/hooks/useThemeColor';
+import { useTheme } from 'react-native-paper';
 
 export type ThemedTextProps = TextProps & {
-  lightColor?: string;
-  darkColor?: string;
   type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  color?: 'light' | 'dark' | string;
 };
 
-export function ThemedText({
-  style,
-  lightColor,
-  darkColor,
-  type = 'default',
-  ...rest
-}: ThemedTextProps) {
-  const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
+export function ThemedText({ style, type = 'default', color, ...rest }: ThemedTextProps) {
+  const { colors } = useTheme();
+
+  const textColor =
+    color === 'light'
+      ? theme.colors.secondary
+      : color === 'dark'
+        ? theme.colors.primary
+        : color || theme.colors.primary;
 
   return (
     <Text
       style={[
-        { color },
+        { color: textColor },
         type === 'default' ? styles.default : undefined,
         type === 'title' ? styles.title : undefined,
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
-        type === 'link' ? styles.link : undefined,
+        type === 'link' ? { ...styles.link, color: colors.primary } : undefined,
         style,
       ]}
       {...rest}
@@ -35,26 +35,35 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
+    fontSize: 14,
     lineHeight: 24,
+    fontFamily: 'System',
+    fontWeight: '400',
   },
   defaultSemiBold: {
     fontSize: 16,
     lineHeight: 24,
+    fontFamily: 'System',
     fontWeight: '600',
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
+    fontSize: 34,
+    fontWeight: '700',
+    fontFamily: 'System',
+    lineHeight: 40,
+    letterSpacing: 0.5,
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 22,
+    fontWeight: '600',
+    fontFamily: 'System',
+    lineHeight: 28,
   },
   link: {
     lineHeight: 30,
     fontSize: 16,
-    color: '#0a7ea4',
+    fontFamily: 'System',
+    fontWeight: '500',
+    textDecorationLine: 'underline',
   },
 });
