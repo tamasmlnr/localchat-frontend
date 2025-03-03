@@ -17,7 +17,7 @@ const Account = () => {
             <Button
                 icon="login"
                 mode="contained"
-                // onPress={() => router.push('/login')}
+                onPress={() => router.push('/(tabs)/account/login')}
                 textColor={theme.colors.secondary}
                 style={{ width: '50%', marginTop: 20 }}
             >
@@ -26,7 +26,7 @@ const Account = () => {
             <Button
                 icon="account-plus-outline"
                 mode="contained"
-                // onPress={() => router.push('/register')}
+                onPress={() => router.push('/(tabs)/account/register')}
                 textColor={theme.colors.secondary}
                 style={{ width: '50%', marginTop: 20 }}
             >
