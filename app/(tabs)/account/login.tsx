@@ -1,10 +1,115 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { TextInput, Button, Text, useTheme } from "react-native-paper";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { ThemedText } from "@/components/ThemedText";
+import { theme } from "@/theme/theme";
+import ThemedTextInput from "@/components/ThemedTextInput";
 
-const login = () => {
+interface ILoginInput {
+    email: string;
+    password: string;
+}
+
+const schema = Yup.object({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+});
+
+export default function LoginScreen() {
+    const { control, handleSubmit, formState: { errors } } = useForm<ILoginInput>({
+        resolver: yupResolver(schema),
+    });
+
+    const { colors } = useTheme();
+
+    const onSubmit: SubmitHandler<ILoginInput> = (data) => {
+        console.log("Login data:", data);
+    };
+
     return (
-        <Text>Login</Text>
-    );
-};
+        <View style={styles.container}>
+            <ThemedText type="title" style={styles.title}>Log in</ThemedText>
 
-export default login;
+            <Controller
+                control={control}
+                name="email"
+                render={({ field: { onChange, value } }) => (
+                    <ThemedTextInput
+                        label="E-mail address"
+                        value={value}
+                        onChangeText={onChange}
+                        mode="outlined"
+                        style={[styles.input, { color: colors.primary }]}
+                        error={!!errors.email}
+                        textColor={theme.colors.tertiary}
+                    />
+                )}
+            />
+            {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+
+            <Controller
+                control={control}
+                name="password"
+                render={({ field: { onChange, value } }) => (
+                    <ThemedTextInput
+                        label="Password"
+                        value={value}
+                        onChangeText={onChange}
+                        mode="outlined"
+                        secureTextEntry
+                        style={styles.input}
+                        error={!!errors.password}
+                        theme={{ colors: { text: "red" } }}
+                        textColor={theme.colors.tertiary}
+                    />
+                )}
+            />
+            {errors.password && <Text style={styles.error}>{errors.password.message}</Text>}
+
+
+
+            <Button
+                mode="contained"
+                onPress={handleSubmit(onSubmit)}
+                style={styles.button}
+                textColor={colors.secondary}
+            >
+                Log in
+            </Button>
+        </View>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        paddingHorizontal: 20,
+        backgroundColor: "#fff",
+    },
+    title: {
+        textAlign: "center",
+        marginBottom: 20,
+    },
+    input: {
+        marginBottom: 15,
+        backgroundColor: theme.colors.secondary,
+        width: "70%",
+        alignSelf: "center",
+        color: 'red'
+    },
+    button: {
+        marginTop: 10,
+        width: "70%",
+        alignSelf: "center",
+    },
+    error: {
+        color: theme.colors.error,
+        textAlign: "center",
+        marginBottom: 10,
+    },
+});
+
