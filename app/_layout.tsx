@@ -5,8 +5,6 @@ import { MD3LightTheme, MD3DarkTheme } from "react-native-paper";
 import { theme } from "@/theme/theme";
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <PaperProvider theme={theme}>
       <Stack screenOptions={{ headerShown: false }} />

@@ -1,10 +1,11 @@
+import { Redirect } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions, Animated } from "react-native";
 
 export default function HomeScreen() {
   const rotation = useRef(new Animated.Value(0)).current;
+  const isLoggedIn = false;
 
-  // Rotate the sun emoji continuously
   useEffect(() => {
     Animated.loop(
       Animated.timing(rotation, {
@@ -23,7 +24,7 @@ export default function HomeScreen() {
   const screenWidth = Dimensions.get("window").width;
 
   return (
-    <View style={styles.container}>
+    !isLoggedIn ? <Redirect href="/auth" /> : <View style={styles.container}>
       <Animated.Text
         style={[
           styles.sun,
