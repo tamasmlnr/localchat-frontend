@@ -11,8 +11,8 @@ import { useLoginMutation } from "@/hooks/queries/useLoginMutation";
 
 
 const schema = Yup.object({
-    email: Yup.string().email("Invalid email").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    username: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string().required("Password is required"),
 });
 
 export default function LoginScreen() {
@@ -33,7 +33,7 @@ export default function LoginScreen() {
 
             <Controller
                 control={control}
-                name="email"
+                name="username"
                 render={({ field: { onChange, value } }) => (
                     <ThemedTextInput
                         label="E-mail address"
@@ -41,12 +41,12 @@ export default function LoginScreen() {
                         onChangeText={onChange}
                         mode="outlined"
                         style={[styles.input, { color: colors.primary }]}
-                        error={!!errors.email}
+                        error={!!errors.username}
                         textColor={theme.colors.tertiary}
                     />
                 )}
             />
-            {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
+            {errors.username && <Text style={styles.error}>{errors.username.message}</Text>}
 
             <Controller
                 control={control}

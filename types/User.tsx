@@ -1,9 +1,9 @@
 interface UserLoginInput {
-    email: string;
+    username: string;
     password: string;
 }
 
 interface UserLoginResponse {
-    email: string;
+    username: string;
     token: string;
 }
