@@ -7,11 +7,8 @@ import * as Yup from "yup";
 import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
 import ThemedTextInput from "@/components/ThemedTextInput";
+import { useLoginMutation } from "@/hooks/queries/useLoginMutation";
 
-interface ILoginInput {
-    email: string;
-    password: string;
-}
 
 const schema = Yup.object({
     email: Yup.string().email("Invalid email").required("Email is required"),
@@ -19,14 +16,15 @@ const schema = Yup.object({
 });
 
 export default function LoginScreen() {
-    const { control, handleSubmit, formState: { errors } } = useForm<ILoginInput>({
+    const { control, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({
         resolver: yupResolver(schema),
     });
+    const loginMutation = useLoginMutation();
 
     const { colors } = useTheme();
 
-    const onSubmit: SubmitHandler<ILoginInput> = (data) => {
-        console.log("Login data:", data);
+    const onSubmit: SubmitHandler<UserLoginInput> = (data) => {
+        loginMutation.mutate(data);
     };
 
     return (
