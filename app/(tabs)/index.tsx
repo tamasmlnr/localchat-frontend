@@ -1,10 +1,11 @@
+import useLoadAuthState from "@/hooks/useLoadAuthState";
 import { Redirect } from "expo-router";
 import React, { useEffect, useRef } from "react";
 import { View, StyleSheet, Dimensions, Animated } from "react-native";
 
 export default function HomeScreen() {
   const rotation = useRef(new Animated.Value(0)).current;
-  const isLoggedIn = false;
+  const user = useLoadAuthState();
 
   useEffect(() => {
     Animated.loop(
@@ -24,7 +25,7 @@ export default function HomeScreen() {
   const screenWidth = Dimensions.get("window").width;
 
   return (
-    !isLoggedIn ? <Redirect href="/auth" /> : <View style={styles.container}>
+    !user ? <Redirect href="/auth" /> : <View style={styles.container}>
       <Animated.Text
         style={[
           styles.sun,
