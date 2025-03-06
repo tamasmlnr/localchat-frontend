@@ -1,7 +1,7 @@
 import { loginUser } from "@/services/userService";
 import { login } from "@/store/authSlice";
 import { useAppDispatch } from "@/store/hooks";
-import { useNavigation, useRouter } from "expo-router";
+import {  useRouter } from "expo-router";
 import { useMutation } from "react-query";
 
 export const useLoginMutation = () => {

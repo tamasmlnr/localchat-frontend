@@ -5,7 +5,6 @@ import { setAuth } from "../store/authSlice";
 
 const useLoadAuthState = () => {
     const dispatch = useAppDispatch();
-    const [user, setUser] = useState<{ username: string } | null>(null);
 
     useEffect(() => {
         const loadAuth = async () => {
@@ -14,14 +13,12 @@ const useLoadAuthState = () => {
 
             if (storedUser && token) {
                 dispatch(setAuth({ user: storedUser, token }));
-                setUser({ username: storedUser });
             }
         };
 
         loadAuth();
     }, [dispatch]);
 
-    return user;
 };
 
 export default useLoadAuthState;

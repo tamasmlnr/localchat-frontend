@@ -14,15 +14,12 @@ const initialState: AuthState = {
 const saveAuthToStorage = async (user: string, token: string) => {
     await AsyncStorage.setItem("user", user);
     await AsyncStorage.setItem("token", token);
-    console.log(user);
-    console.log(token);
 };
 
 const clearAuthFromStorage = async () => {
     await AsyncStorage.removeItem("user");
     await AsyncStorage.removeItem("token");
 };
-
 const authSlice = createSlice({
     name: "auth",
     initialState,
