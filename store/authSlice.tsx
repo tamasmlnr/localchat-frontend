@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface AuthState {
+export interface AuthState {
     user: string | null;
     token: string | null;
 }

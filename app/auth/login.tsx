@@ -17,6 +17,10 @@ const schema = Yup.object({
 
 export default function LoginScreen() {
     const { control, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({
+        values: {
+            username: "test@test.test",
+            password: "test"
+        },
         resolver: yupResolver(schema),
     });
     const loginMutation = useLoginMutation();

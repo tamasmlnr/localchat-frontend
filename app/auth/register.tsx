@@ -6,6 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
+import { useRegisterUser } from "@/hooks/queries/useRegisterMutation";
 
 interface IFormInput {
     name: string;
@@ -29,11 +30,21 @@ export default function RegisterScreen() {
     const { control, handleSubmit, formState: { errors } } = useForm<IFormInput>({
         resolver: yupResolver(schema),
     });
-
+    const { mutateAsync, isLoading, error } = useRegisterUser();
     const { colors } = useTheme();
 
-    const onSubmit: SubmitHandler<IFormInput> = (data) => {
-        console.log("Registration data:", data);
+    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+        const userData = {
+            username: data.email,
+            password: data.password,
+            name: data.name,
+        };
+
+        try {
+            await mutateAsync(userData);
+        } catch (err) {
+            console.error("Error during registration:", err);
+        }
     };
 
     return (

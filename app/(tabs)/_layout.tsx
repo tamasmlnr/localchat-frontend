@@ -36,6 +36,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="users/index"
+        options={{
+          title: "Nearby users",
+          tabBarIcon: ({ color, size }) => (
+            <Icon source="account" color={color} size={size} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
