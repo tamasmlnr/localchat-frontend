@@ -3,10 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { Card, Avatar, useTheme, IconButton } from 'react-native-paper';
 import { ThemedText } from './ThemedText';
 import { theme } from '@/theme/theme';
+import { useRoute } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 interface User {
     name: string;
-    description: string;
+    _id: string
 }
 
 interface UsercardProps {
@@ -16,10 +18,13 @@ interface UsercardProps {
 const UserCard = ({ user }: UsercardProps) => {
     const randomAvatar = Math.floor(Math.random() * 6) + 1;
     const theme = useTheme();
+    const router = useRouter();
 
     const handleMessagePress = () => {
-        // Handle message action here
-        console.log(`Message ${user.name}`);
+        router.push({
+            pathname: '/(tabs)/messages',
+            params: { openUserId: user._id }
+        });
     };
 
     return (

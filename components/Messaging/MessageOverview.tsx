@@ -53,6 +53,7 @@ const MessageOverview = () => {
                 <MessagePreview
                     key={message._id}
                     message={message.lastMessage.content}
+                    conversationId={"1"}
                     userIcon='https://randomuser.me/api/portraits/men/3.jpg'
                     userName={message.lastMessage.sender} />)}
         </ScrollView>

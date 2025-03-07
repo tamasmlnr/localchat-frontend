@@ -1,3 +1,4 @@
+import { theme } from '@/theme/theme';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar } from 'react-native-paper';
@@ -24,24 +25,26 @@ const Message: React.FC<MessageProps> = ({
             ]}
         >
             {!isSent && (
-                <Text style={styles.authorName}>{authorName}</Text>
-            )}
-
-            {!isSent && (
                 <Avatar.Image
                     size={40}
                     source={{ uri: authorIconUri }}
                     style={styles.avatar}
                 />
             )}
-            <View
-                style={[
-                    styles.messageBubble,
-                    isSent ? styles.sentMessageBubble : styles.receivedMessageBubble,
-                ]}
-            >
-                <Text style={styles.messageText}>{messageContent}</Text>
+
+            <View style={styles.messageContentContainer}>
+                {!isSent && <Text style={styles.authorName}>{authorName}</Text>}
+
+                <View
+                    style={[
+                        styles.messageBubble,
+                        isSent ? styles.sentMessageBubble : styles.receivedMessageBubble,
+                    ]}
+                >
+                    <Text style={[styles.messageText, { color: isSent ? theme.colors.secondary : theme.colors.tertiary }]}>{messageContent}</Text>
+                </View>
             </View>
+
             {isSent && (
                 <Avatar.Image
                     size={40}
@@ -57,34 +60,34 @@ const styles = StyleSheet.create({
     messageContainer: {
         flexDirection: 'row',
         marginBottom: 10,
-        alignItems: 'flex-start',
+        alignItems: 'flex-end', 
     },
     sentMessageContainer: {
         justifyContent: 'flex-end',
-        alignItems: 'flex-end',
     },
     receivedMessageContainer: {
         justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+    },
+    messageContentContainer: {
+        maxWidth: '80%',
     },
     authorName: {
         fontSize: 12,
         fontWeight: 'bold',
         color: '#333',
-        marginBottom: 5,
-        marginLeft: 50,
+        marginBottom: 3,
+        marginLeft: 10, 
     },
     avatar: {
-        margin: 5,
+        marginHorizontal: 5,
     },
     messageBubble: {
-        maxWidth: '80%',
         padding: 10,
         borderRadius: 15,
-        marginVertical: 5,
+        marginVertical: 2,
     },
     sentMessageBubble: {
-        backgroundColor: '#DCF8C6',
+        backgroundColor: theme.colors.primary,
         borderBottomRightRadius: 0,
         alignSelf: 'flex-end',
     },

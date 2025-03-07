@@ -1,6 +1,4 @@
 import { Stack, useRouter, useRootNavigationState } from "expo-router";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback } from "react";
 
 export default function AccountLayout() {
     const router = useRouter();

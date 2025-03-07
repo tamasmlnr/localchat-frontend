@@ -1,6 +1,8 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter, usePathname, useSegments } from 'expo-router';
+import { useRef, useEffect } from 'react';
 
 export default function MessagesLayout() {
+
     return (
         <Stack>
             <Stack.Screen
@@ -10,7 +12,14 @@ export default function MessagesLayout() {
                 }}
             />
             <Stack.Screen
-                name="[messageId]"
+                name="[conversationId]"
+                options={{
+                    headerTitle: "Conversation",
+                    headerBackTitle: "Messages"
+                }}
+            />
+            <Stack.Screen
+                name="new/[userId]"
                 options={{
                     headerTitle: "Conversation",
                     headerBackTitle: "Messages"

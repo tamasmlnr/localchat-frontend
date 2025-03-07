@@ -11,4 +11,5 @@ interface UserLoginResponse {
 type User = {
     username: string;
     name: string;
+    _id: string
 }
