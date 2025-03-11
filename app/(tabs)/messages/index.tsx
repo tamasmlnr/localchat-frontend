@@ -4,14 +4,14 @@ import React, { useEffect } from 'react';
 import { View } from 'react-native';
 
 const Messages = () => {
-    const { openUserId } = useLocalSearchParams();
+    const { username } = useLocalSearchParams();
     const router = useRouter();
 
     useEffect(() => {
-        if (openUserId) {
-            router.push(`/(tabs)/messages/new/${openUserId}`);
+        if (username) {
+            router.push(`/(tabs)/messages/new/${username}`);
         }
-    }, [openUserId]);
+    }, [username]);
 
     return (
         <MessageOverview />

@@ -7,7 +7,6 @@ import { store } from "@/store";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
-  console.log(process.env);
 
   return (
     <Provider store={store}>

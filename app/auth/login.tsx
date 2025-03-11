@@ -19,7 +19,7 @@ export default function LoginScreen() {
     const { control, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({
         values: {
             username: "test@test.test",
-            password: "test"
+            password: "password"
         },
         resolver: yupResolver(schema),
     });

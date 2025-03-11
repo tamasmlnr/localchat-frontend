@@ -6,10 +6,6 @@ import { theme } from '@/theme/theme';
 import { useRoute } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
 
-interface User {
-    name: string;
-    _id: string
-}
 
 interface UsercardProps {
     user: User;
@@ -23,7 +19,7 @@ const UserCard = ({ user }: UsercardProps) => {
     const handleMessagePress = () => {
         router.push({
             pathname: '/(tabs)/messages',
-            params: { openUserId: user._id }
+            params: { username: user.username }
         });
     };
 

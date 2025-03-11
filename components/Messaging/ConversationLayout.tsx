@@ -1,73 +1,58 @@
-import React, { useState, useRef } from 'react';
-import { View, StyleSheet, FlatList, Animated } from 'react-native';
+// MessagingLayout.tsx
+import React, { useState } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { TextInput, IconButton } from 'react-native-paper';
 import AnimatedMessage from './AnimatedMessage';
+import { useMessagesQuery } from '../../hooks/queries/useGetMessages';
+import { useSendMessageMutation } from '../../hooks/queries/useSendMessageMutation';
+import { useSocket } from '../../hooks/useSocket';
+import { ThemedText } from '../ThemedText';
+import { theme } from '@/theme/theme';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/store/selectors/authSelectors';
 
 interface MessagingLayoutProps {
-    userId?: string
-    conversationId?: string | null
+    recipientUsername?: string | undefined;
+    conversationId?: string | undefined;
 }
 
-const MessagingLayout = ({ userId, conversationId }: MessagingLayoutProps) => {
+const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutProps) => {
     const [message, setMessage] = useState('');
-    const [messages, setMessages] = useState([
-        {
-            id: '1',
-            authorName: "John Doe",
-            authorIconUri: "https://randomuser.me/api/portraits/men/1.jpg",
-            authorId: "1",
-            messageContent: "Hey, how are you?",
-            isSent: false,
-        },
-        {
-            id: '2',
-            authorName: "Me",
-            authorIconUri: "https://randomuser.me/api/portraits/men/2.jpg",
-            authorId: "2",
-            messageContent: "I'm good, thanks!",
-            isSent: true,
-        }
-    ]);
-
-    const flatListRef = useRef(null);
+    const { data: messages, isLoading, isError } = useMessagesQuery(conversationId ?? '');
+    const { mutate: sendMessageMutation } = useSendMessageMutation();
+    const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(recipientUsername ?? '');
+    const combinedMessages = [...(messages || []), ...socketMessages];
+    const currentUser = useSelector(selectUser);
 
     const handleSend = () => {
-        if (message.trim()) {
-
+        if (message.trim() && recipientUsername) {
             const newMessage = {
-                id: Date.now().toString(),
-                authorName: "Me",
-                authorIconUri: "https://randomuser.me/api/portraits/men/2.jpg",
-                authorId: "2",
-                messageContent: message,
-                isSent: true,
+                senderId: currentUser,
+                receiverId: recipientUsername,
+                content: message,
+                conversationId: conversationId
             };
 
-            setMessages([...messages, newMessage]);
-            console.log('Send Message:', message);
-            setMessage('');
+            sendMessageSocket(recipientUsername, conversationId!, message);
+            sendMessageMutation(newMessage);
 
-            setTimeout(() => {
-                flatListRef.current?.scrollToEnd({ animated: true });
-            }, 100);
+            setMessage('');
         }
     };
 
     const renderItem = ({ item, index }) => (
-        <AnimatedMessage
-            item={item}
-            index={index}
-            messagesLength={messages.length}
-        />
+        <AnimatedMessage item={item} index={index} messagesLength={combinedMessages.length} />
     );
+
+    if (isLoading) return <View><ThemedText>Loading...</ThemedText></View>;
+    if (isError) return <View><ThemedText>Error loading messages</ThemedText></View>;
 
     return (
         <View style={styles.container}>
             <FlatList
-                ref={flatListRef}
-                data={messages}
+                data={combinedMessages}
                 renderItem={renderItem}
-                keyExtractor={item => item.id}
+                keyExtractor={(item) => item.id}
                 contentContainerStyle={styles.messagesContainer}
             />
             <View style={styles.inputContainer}>
@@ -78,11 +63,7 @@ const MessagingLayout = ({ userId, conversationId }: MessagingLayoutProps) => {
                     onChangeText={setMessage}
                     style={styles.input}
                 />
-                <IconButton
-                    icon="send"
-                    size={24}
-                    onPress={handleSend}
-                />
+                <IconButton icon="send" size={24} onPress={handleSend} iconColor={message.length > 0 ? theme.colors.primary : undefined} />
             </View>
         </View>
     );
