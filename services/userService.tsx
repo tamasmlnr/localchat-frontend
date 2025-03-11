@@ -1,6 +1,6 @@
 import { SERVER_URL } from "@/constants/constants";
 import api from "@/utils/axios/axiosInstance";
-import axios from "axios";
+
 
 export const loginUser = async (credentials: UserLoginInput): Promise<UserLoginResponse> => {
     const { data } = await api.post<UserLoginResponse>(`${SERVER_URL}/api/login`, credentials);
