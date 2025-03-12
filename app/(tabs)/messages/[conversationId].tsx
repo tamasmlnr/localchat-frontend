@@ -6,7 +6,6 @@ const MessageDetail = () => {
     const route = useRoute();
     const { conversationId } = route.params as { conversationId: string };
 
-
     return (
         <MessagingLayout conversationId={conversationId} />
     );

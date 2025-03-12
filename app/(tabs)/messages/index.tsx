@@ -1,4 +1,5 @@
 import MessageOverview from '@/components/Messaging/MessageOverview';
+import { useIsFocused } from '@react-navigation/native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
@@ -9,7 +10,7 @@ const Messages = () => {
 
     useEffect(() => {
         if (username) {
-            router.push(`/(tabs)/messages/new/${username}`);
+            router.replace(`/(tabs)/messages/new/${username}`);
         }
     }, [username]);
 

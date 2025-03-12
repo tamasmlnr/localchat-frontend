@@ -11,7 +11,6 @@ export const useLoginMutation = () => {
     return useMutation({
         mutationFn: loginUser,
         onSuccess: (data) => {
-            console.log(data);
             dispatch(login({ user: data.username, token: data.token }));
             router.replace("/")
         },

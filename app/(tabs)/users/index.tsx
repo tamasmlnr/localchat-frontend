@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
 
 const Users = () => {
-    const { data: users = [] } = useGetAllUsers();
+    const { data: users = [], refetch } = useGetAllUsers();
     const currentUser = useSelector(selectUser);
     const filteredUsers = users.filter((user) => {
         return user.username !== currentUser

@@ -43,6 +43,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => (
             <Icon source="account" color={color} size={size} />
           ),
+
         }}
       />
       <Tabs.Screen

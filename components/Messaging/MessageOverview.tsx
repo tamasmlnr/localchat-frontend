@@ -53,18 +53,16 @@ import { date } from 'yup';
 const MessageOverview = () => {
     const currentUser = useSelector(selectUser);
     const { data: conversations = [], refetch } = useGetConversations(currentUser);
-    console.log(conversations);
-    const sampleMessage = [{ "_id": "67d0679b5371d50e5594c722", "isWrittenByUser": true, "lastMessage": { "_id": "67d06a746fd65a4508021272", "content": "awd", "createdAt": "2025-03-11T16:53:08.674Z", "receiver": "test2@test2.test", "sender": "test@test.test" }, "userDetails": [[Object], [Object]], "users": ["test@test.test", "test2@test2.test"] }]
-    console.log(conversations[0]?.userDetails);
+
     return (
         <ScrollView>
-            {conversations.map((message) =>
+            {conversations.map((conversation) =>
                 <MessagePreview
-                    key={message._id}
-                    message={message.lastMessage.content}
-                    conversationId={"1"}
+                    key={conversation._id}
+                    message={conversation.lastMessage.content}
+                    conversationId={conversation._id}
                     userIcon='https://randomuser.me/api/portraits/men/3.jpg'
-                    userName={message.userDetails[0].name} />)}
+                    userName={conversation.userDetails[0]._id} />)}
         </ScrollView>
     );
 };
