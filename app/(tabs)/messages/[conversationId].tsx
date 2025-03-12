@@ -1,5 +1,4 @@
 import React from 'react';
-import { useRoute } from '@react-navigation/native';
 import MessagingLayout from '@/components/Messaging/ConversationLayout';
 import { useLocalSearchParams } from 'expo-router';
 

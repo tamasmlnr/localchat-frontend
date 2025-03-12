@@ -62,6 +62,7 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
                     value={message}
                     onChangeText={setMessage}
                     style={styles.input}
+                    textColor={theme.colors.tertiary}
                 />
                 <IconButton icon="send" size={24} onPress={handleSend} iconColor={message.length > 0 ? theme.colors.primary : undefined} />
             </View>
@@ -87,6 +88,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         marginRight: 8,
+        color: "red"
     },
 });
 
