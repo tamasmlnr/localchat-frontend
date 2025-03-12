@@ -19,3 +19,7 @@ export const getConversations = async (userId: string) => {
     const { data } = await api.get(`${SERVER_URL}/api/messages/conversations/${userId}`);
     return data;
 };
+export const getOrCreateConversations = async (user1Id: string | undefined | null, user2Id: string | undefined | null) => {
+    const { data } = await api.post(`${SERVER_URL}/api/messages/conversation/users`, { user1Id, user2Id });
+    return data;
+};

@@ -1,15 +1,14 @@
-// MessagingLayout.tsx
 import React, { useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TextInput, IconButton } from 'react-native-paper';
 import AnimatedMessage from './AnimatedMessage';
-import { useGetConversationQuery } from '../../hooks/queries/useGetMessages';
 import { useSendMessageMutation } from '../../hooks/queries/useSendMessageMutation';
 import { useSocket } from '../../hooks/useSocket';
 import { ThemedText } from '../ThemedText';
 import { theme } from '@/theme/theme';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
+import { useGetOrCreateConversations } from '@/hooks/queries/useGetConversationWithUser';
 
 interface MessagingLayoutProps {
     recipientUsername?: string | undefined;
@@ -18,12 +17,12 @@ interface MessagingLayoutProps {
 
 const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutProps) => {
     const [message, setMessage] = useState('');
-    const { data: messages, isLoading, isError } = useGetConversationQuery(conversationId ?? '');
     const { mutate: sendMessageMutation } = useSendMessageMutation();
     const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(recipientUsername ?? '');
-    const combinedMessages = [...(messages || []), ...socketMessages];
     const currentUser = useSelector(selectUser);
-    console.log(messages);
+    console.log(recipientUsername);
+    const { data: { messages = [] } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
+    const combinedMessages = [...(messages || []), ...socketMessages];
 
     const handleSend = () => {
         if (message.trim() && recipientUsername) {

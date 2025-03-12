@@ -1,13 +1,13 @@
 import React from 'react';
 import { useRoute } from '@react-navigation/native';
 import MessagingLayout from '@/components/Messaging/ConversationLayout';
+import { useLocalSearchParams } from 'expo-router';
 
 const MessageDetail = () => {
-    const route = useRoute();
-    const { conversationId } = route.params as { conversationId: string };
+    const { conversationId, userName } = useLocalSearchParams<{ conversationId: string; userName: string }>();
 
     return (
-        <MessagingLayout conversationId={conversationId} />
+        <MessagingLayout conversationId={conversationId} recipientUsername={userName} />
     );
 };
 

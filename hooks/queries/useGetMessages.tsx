@@ -1,9 +1,9 @@
 import { useQuery } from 'react-query';
 import { getConversation } from '@/services/messageService';
 
-export const useGetConversationQuery = (conversationId: string) => {
+export const useGetOrCreateConversationQuery = (conversationId: string) => {
     return useQuery(
-        ['messages', conversationId],
+        ['getOrCreateConversation', conversationId],
         () => getConversation(conversationId),
         { enabled: !!conversationId }
     );

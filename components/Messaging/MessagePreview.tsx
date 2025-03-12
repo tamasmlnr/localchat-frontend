@@ -14,8 +14,12 @@ const MessagePreview: React.FC<MessagePreviewProps> = ({ userIcon, userName, mes
     const router = useRouter();
 
     const handleMessageTouch = () => {
-        router.push(`/(tabs)/messages/${conversationId}`);
+        router.push({
+            pathname: `/(tabs)/messages/[conversationId]`,
+            params: { conversationId, userName },
+        });
     };
+
 
 
     return (
