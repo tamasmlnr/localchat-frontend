@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import MessagePreview from './MessagePreview';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { selectUser } from '@/store/selectors/authSelectors';
 import { useSelector } from 'react-redux';
 import { useGetConversations } from '@/hooks/queries/useGetConversations';
-import { date } from 'yup';
+import { useIsFocused } from '@react-navigation/native';
 
 const MessageOverview = () => {
     const currentUser = useSelector(selectUser);
     const { data: conversations = [], refetch } = useGetConversations(currentUser);
+    const isFocused = useIsFocused();
+
+    useEffect(() => { refetch() }, [isFocused])
 
     return (
         <ScrollView>

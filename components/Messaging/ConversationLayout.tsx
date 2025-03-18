@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TextInput, IconButton } from 'react-native-paper';
 import AnimatedMessage from './AnimatedMessage';
@@ -18,12 +18,12 @@ interface MessagingLayoutProps {
 const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutProps) => {
     const [message, setMessage] = useState('');
     const { mutate: sendMessageMutation } = useSendMessageMutation();
-    const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(recipientUsername ?? '');
     const currentUser = useSelector(selectUser);
-    console.log(recipientUsername);
+    const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(currentUser ?? '', conversationId);
     const { data: { messages = [] } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
     const combinedMessages = [...(messages || []), ...socketMessages];
-
+    console.log("for", recipientUsername, ":", socketMessages);
+    const flatListRef = useRef<FlatList>(null);
     const handleSend = () => {
         if (message.trim() && recipientUsername) {
             const newMessage = {
@@ -32,10 +32,8 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
                 content: message,
                 conversationId: conversationId
             };
-
-            sendMessageSocket(recipientUsername, conversationId!, message);
+            sendMessageSocket(currentUser!, recipientUsername, message);
             sendMessageMutation(newMessage);
-
             setMessage('');
         }
     };
@@ -44,16 +42,28 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
         <AnimatedMessage item={item} index={index} messagesLength={combinedMessages.length} />
     );
 
+    const handleContentSizeChange = (_: number, contentHeight: number) => {
+        if (flatListRef.current) {
+            const extraScroll = 50;
+            flatListRef.current.scrollToOffset({
+                offset: contentHeight + extraScroll,
+                animated: true,
+            });
+        }
+    };
+
     if (isLoading) return <View><ThemedText>Loading...</ThemedText></View>;
     if (isError) return <View><ThemedText>Error loading messages</ThemedText></View>;
 
     return (
         <View style={styles.container}>
             <FlatList
+                ref={flatListRef}
                 data={combinedMessages}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item._id}
                 contentContainerStyle={styles.messagesContainer}
+                onContentSizeChange={handleContentSizeChange}
             />
             <View style={styles.inputContainer}>
                 <TextInput
