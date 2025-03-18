@@ -14,13 +14,13 @@ const socket = io(server);
 
 export const useSocket = (userId: string, conversationId: string) => {
     const [messages, setMessages] = useState<Message[]>([]);
-
+    console.log(userId, "usesocket called");
     useEffect(() => {
-        console.log("used");
         socket.emit('join', userId);
-        socket.on('receive-message', (message: Message) => {
-            console.log("received");
-            console.log(message);
+        console.log(userId, "usesocket useeffect called");
+
+        const handleReceiveMessage = (message: Message) => {
+            console.log(userId, "handle receive");
             setMessages((prevMessages) => [
                 ...prevMessages,
                 {
@@ -31,7 +31,10 @@ export const useSocket = (userId: string, conversationId: string) => {
                     conversationId
                 },
             ]);
-        });
+        };
+
+        socket.off('receive-message', handleReceiveMessage);
+        socket.on('receive-message', handleReceiveMessage);
 
         socket.on('connect', () => {
             console.log("Socket connected! ID:", socket.id);
@@ -41,12 +44,13 @@ export const useSocket = (userId: string, conversationId: string) => {
             console.error("Socket connection error:", error);
         });
 
-
         return () => {
-            socket.off('receive-message');
+            socket.off('receive-message', handleReceiveMessage);
+            socket.off('connect');
+            socket.off('connect_error');
         };
-
     }, [userId]);
+
 
     const sendMessage = (senderId: string, receiverId: string, content: string) => {
         console.log(`sent from ${senderId} to ${receiverId} : ${content}`);

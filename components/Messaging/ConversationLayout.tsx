@@ -22,7 +22,7 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
     const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(currentUser ?? '', conversationId);
     const { data: { messages = [] } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
     const combinedMessages = [...(messages || []), ...socketMessages];
-    console.log("for", recipientUsername, ":", socketMessages);
+    // console.log("for", recipientUsername, ":", socketMessages);
     const flatListRef = useRef<FlatList>(null);
     const handleSend = () => {
         if (message.trim() && recipientUsername) {
