@@ -12,6 +12,7 @@ export const useGetConversations = (username: string | null) => {
             refetchOnMount: true,
             refetchOnWindowFocus: true,
             refetchInterval: false,
+            select: (data) => data ?? [],
         }
     );
 };

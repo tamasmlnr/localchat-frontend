@@ -12,26 +12,18 @@ import { useSocket } from '@/contexts/SocketContext';
 
 interface MessagingLayoutProps {
     recipientUsername?: string | undefined;
-    conversationId?: string | undefined;
 }
 
-const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutProps) => {
+const MessagingLayout = ({ recipientUsername }: MessagingLayoutProps) => {
     const [message, setMessage] = useState('');
-    const { mutate: sendMessageMutation } = useSendMessageMutation();
     const currentUser = useSelector(selectUser);
     const { sendMessage, messages: socketMessages } = useSocket();
-    const { data: { messages = [] } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
+    const { data: { messages = [], conversation } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
     const combinedMessages = [...(messages || []), ...socketMessages];
     const flatListRef = useRef<FlatList>(null);
     const handleSend = () => {
         if (message.trim() && recipientUsername) {
-            const newMessage = {
-                senderId: currentUser,
-                receiverId: recipientUsername,
-                content: message,
-                conversationId: conversationId
-            };
-            sendMessage(currentUser!, recipientUsername, message);
+            sendMessage(currentUser!, recipientUsername, message, conversation._id);
             setMessage('');
         }
     };

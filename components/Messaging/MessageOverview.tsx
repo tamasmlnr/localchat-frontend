@@ -11,7 +11,9 @@ const MessageOverview = () => {
     const { data: conversations = [], refetch } = useGetConversations(currentUser);
     const isFocused = useIsFocused();
 
-    useEffect(() => { refetch() }, [isFocused])
+    useEffect(() => {
+        refetch()
+    }, [isFocused])
 
     return (
         <ScrollView>

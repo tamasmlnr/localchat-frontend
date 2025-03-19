@@ -14,7 +14,7 @@ interface Message {
 
 interface SocketContextType {
     messages: Message[];
-    sendMessage: (senderId: string, receiverId: string, content: string) => void;
+    sendMessage: (senderId: string, receiverId: string, content: string, conversationId: string) => void;
 }
 
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
@@ -47,8 +47,9 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
         };
     }, [userId]);
 
-    const sendMessage = (sender: string, receiver: string, content: string) => {
+    const sendMessage = (sender: string, receiver: string, content: string, conversationId: string) => {
         if (socket) {
+            socket.emit("send-message", { sender, receiver, content, conversationId });
             setMessages((prevMessages) => [
                 ...prevMessages,
                 { content, sender, receiver, _id: Date.now().toString(), createdAt: new Date().toISOString() },
