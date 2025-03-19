@@ -2,19 +2,23 @@ import { Stack } from "expo-router";
 import { PaperProvider } from "react-native-paper";
 import { theme } from "@/theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Provider } from "react-redux";
+import { Provider, useSelector } from "react-redux";
 import { store } from "@/store";
+import { SocketProvider } from "../contexts/SocketContext";
+import { selectUser } from "@/store/selectors/authSelectors";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <PaperProvider theme={theme}>
-          <Stack screenOptions={{ headerShown: false }} />
-        </PaperProvider>
-      </QueryClientProvider>
+      <SocketProvider>
+        <QueryClientProvider client={queryClient}>
+          <PaperProvider theme={theme}>
+            <Stack screenOptions={{ headerShown: false }} />
+          </PaperProvider>
+        </QueryClientProvider>
+      </SocketProvider>
     </Provider>
   );
 }

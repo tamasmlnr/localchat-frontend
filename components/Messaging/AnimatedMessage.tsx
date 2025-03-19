@@ -5,10 +5,15 @@ import Message from "./Message";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/store/selectors/authSelectors";
 
-const AnimatedMessage = ({ item, index, messagesLength }) => {
+interface AnimatedMessageProps {
+    item: any,
+    index: number,
+    messagesLength: number
+}
+
+const AnimatedMessage = ({ item, index, messagesLength }: AnimatedMessageProps) => {
     const fadeAnim = useRef(new Animated.Value(0)).current;
     const currentUser = useSelector(selectUser);
-
     React.useEffect(() => {
         if (index === messagesLength - 1) {
             Animated.timing(fadeAnim, {

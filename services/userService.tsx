@@ -5,6 +5,7 @@ import api from "@/utils/axios/axiosInstance";
 export const loginUser = async (credentials: UserLoginInput): Promise<UserLoginResponse> => {
     const { data } = await api.post<UserLoginResponse>(`${SERVER_URL}/api/login`, credentials);
     return data;
+
 };
 
 export const registerUser = async (userData: UserLoginInput) => {

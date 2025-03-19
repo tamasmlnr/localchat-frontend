@@ -3,12 +3,12 @@ import { View, StyleSheet, FlatList } from 'react-native';
 import { TextInput, IconButton } from 'react-native-paper';
 import AnimatedMessage from './AnimatedMessage';
 import { useSendMessageMutation } from '../../hooks/queries/useSendMessageMutation';
-import { useSocket } from '../../hooks/useSocket';
 import { ThemedText } from '../ThemedText';
 import { theme } from '@/theme/theme';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
 import { useGetOrCreateConversations } from '@/hooks/queries/useGetConversationWithUser';
+import { useSocket } from '@/contexts/SocketContext';
 
 interface MessagingLayoutProps {
     recipientUsername?: string | undefined;
@@ -19,10 +19,9 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
     const [message, setMessage] = useState('');
     const { mutate: sendMessageMutation } = useSendMessageMutation();
     const currentUser = useSelector(selectUser);
-    const { messages: socketMessages, sendMessage: sendMessageSocket } = useSocket(currentUser ?? '', conversationId);
+    const { sendMessage, messages: socketMessages } = useSocket();
     const { data: { messages = [] } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
     const combinedMessages = [...(messages || []), ...socketMessages];
-    // console.log("for", recipientUsername, ":", socketMessages);
     const flatListRef = useRef<FlatList>(null);
     const handleSend = () => {
         if (message.trim() && recipientUsername) {
@@ -32,8 +31,7 @@ const MessagingLayout = ({ recipientUsername, conversationId }: MessagingLayoutP
                 content: message,
                 conversationId: conversationId
             };
-            sendMessageSocket(currentUser!, recipientUsername, message);
-            sendMessageMutation(newMessage);
+            sendMessage(currentUser!, recipientUsername, message);
             setMessage('');
         }
     };
