@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Text, View } from 'react-native';
 
-const Account = () => {
+const AccountOverview = () => {
     const dispatch = useAppDispatch();
     const router = useRouter();
 
@@ -26,4 +26,4 @@ const Account = () => {
     );
 };
 
-export default Account;
+export default AccountOverview;

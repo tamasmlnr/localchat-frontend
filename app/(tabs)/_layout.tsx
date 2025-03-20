@@ -1,8 +1,15 @@
+import ProfilePhotoIcon from "@/components/ProfilePhotoIcon";
+import { useGetUserDetails } from "@/hooks/queries/useGetUserDetails";
+import { selectUser } from "@/store/selectors/authSelectors";
 import { theme } from "@/theme/theme";
 import { Tabs } from "expo-router";
 import { Icon } from "react-native-paper";
+import { useSelector } from "react-redux";
 
 export default function TabLayout() {
+  const userId = useSelector(selectUser);
+  const { data: currentUser, refetch, isFetching } = useGetUserDetails(userId ?? '');
+
   return (
     <Tabs
       screenOptions={{
@@ -21,18 +28,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
-          tabBarIcon: ({ color, size }) => (
-            <Icon source="home" color={color} size={size} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="account/index"
-        options={{
           title: "Account",
           tabBarIcon: ({ color, size }) => (
-            <Icon source="account" color={color} size={size} />
+            <ProfilePhotoIcon source={currentUser?.profilePhotoUrl} size={size} />
           ),
         }}
       />

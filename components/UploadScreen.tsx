@@ -1,19 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Image, StyleSheet, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/store/selectors/authSelectors";
 import * as ImagePicker from "expo-image-picker";
-import { replacePhoto, uploadPhoto } from "@/services/userService";
+import { uploadPhoto } from "@/services/userService";
 import ThemedButton from "./ThemedButton";
 import { useGetUserDetails } from "@/hooks/queries/useGetUserDetails";
+import ProfilePhotoIcon from "./ProfilePhotoIcon";
+import LoadingIndicator from "./LoadingIndicator";
 
 const UploadScreen = () => {
     const userId = useSelector(selectUser);
     const { data: currentUser, refetch, isFetching } = useGetUserDetails(userId ?? '');
+    const [loading, setLoading] = useState(false);
     const screenWidth = Dimensions.get("window").width;
     const imageIdFromUsername = userId?.replace(/[.@]/g, '');
 
     const handleImageUpload = async () => {
+        setLoading(true);
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
             alert("Permission to access gallery is required!");
@@ -46,6 +50,8 @@ const UploadScreen = () => {
         } catch (error) {
             console.log(error);
             console.error("Upload failed", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -57,7 +63,7 @@ const UploadScreen = () => {
 
     return (
         <View>
-            <Image source={currentUser?.profilePhotoUrl ? { uri: currentUser?.profilePhotoUrl } : require("@/assets/images/avatar.png")} style={styles.image} />
+            {loading || isFetching ? <LoadingIndicator size={screenWidth * 0.5} /> : <ProfilePhotoIcon source={currentUser?.profilePhotoUrl} size={screenWidth * 0.5} />}
             {currentUser?.profilePhotoUrl ? <ThemedButton onPress={handleImageUpload} disabled={isFetching}>Change profile picture</ThemedButton> :
                 <>
                     <ThemedButton onPress={handleImageUpload} disabled={isFetching}>Upload profile picture</ThemedButton>
