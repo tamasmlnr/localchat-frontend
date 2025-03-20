@@ -3,7 +3,7 @@ import { Text, type TextProps, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 
 export type ThemedTextProps = TextProps & {
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'body';
   color?: 'light' | 'dark' | string;
 };
 
@@ -26,6 +26,7 @@ export function ThemedText({ style, type = 'default', color, ...rest }: ThemedTe
         type === 'defaultSemiBold' ? styles.defaultSemiBold : undefined,
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? { ...styles.link, color: colors.primary } : undefined,
+        type === 'body' ? { ...styles.body, color: colors.tertiary } : undefined,
         style,
       ]}
       {...rest}
@@ -61,9 +62,15 @@ const styles = StyleSheet.create({
   },
   link: {
     lineHeight: 30,
-    fontSize: 16,
+    fontSize: 14,
     fontFamily: 'System',
     fontWeight: '500',
     textDecorationLine: 'underline',
   },
+  body: {
+    lineHeight: 30,
+    fontSize: 12,
+    fontFamily: 'System',
+    fontWeight: '500'
+  }
 });

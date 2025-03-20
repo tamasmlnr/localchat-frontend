@@ -9,7 +9,7 @@ import { useGetUserDetails } from "@/hooks/queries/useGetUserDetails";
 import ProfilePhotoIcon from "./ProfilePhotoIcon";
 import LoadingIndicator from "./LoadingIndicator";
 
-const UploadScreen = () => {
+const PhotoUpload = () => {
     const userId = useSelector(selectUser);
     const { data: currentUser, refetch, isFetching } = useGetUserDetails(userId ?? '');
     const [loading, setLoading] = useState(false);
@@ -17,7 +17,6 @@ const UploadScreen = () => {
     const imageIdFromUsername = userId?.replace(/[.@]/g, '');
 
     const handleImageUpload = async () => {
-        setLoading(true);
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
             alert("Permission to access gallery is required!");
@@ -45,6 +44,7 @@ const UploadScreen = () => {
         formData.append("userId", userId);
 
         try {
+            setLoading(true);
             const res = await uploadPhoto(formData);
             refetch()
         } catch (error) {
@@ -73,4 +73,4 @@ const UploadScreen = () => {
 
 };
 
-export default UploadScreen;
+export default PhotoUpload;
