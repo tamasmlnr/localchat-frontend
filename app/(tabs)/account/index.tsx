@@ -1,10 +1,10 @@
 import ThemedButton from '@/components/ThemedButton';
+import UploadScreen from '@/components/UploadScreen';
 import { logout } from '@/store/authSlice';
 import { useAppDispatch } from '@/store/hooks';
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { Text } from 'react-native';
-import { Button } from 'react-native-paper';
+import { Text, View } from 'react-native';
 
 const Account = () => {
     const dispatch = useAppDispatch();
@@ -15,11 +15,14 @@ const Account = () => {
         router.replace("/auth")
     }
     return (
-        <ThemedButton
-            onPress={handleClick}
-        >
-            Log out
-        </ThemedButton >
+        <View>
+            <UploadScreen />
+            <ThemedButton
+                onPress={handleClick}
+            >
+                Log out
+            </ThemedButton >
+        </View>
     );
 };
 

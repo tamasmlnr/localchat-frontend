@@ -12,4 +12,5 @@ type User = {
     username: string;
     name: string;
     _id: string
+    profilePhotoUrl: string;
 }

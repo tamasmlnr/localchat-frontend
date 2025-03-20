@@ -17,3 +17,15 @@ export const getAllUsers = async (): Promise<User[]> => {
     const { data } = await api.get<User[]>(`${SERVER_URL}/api/users`);
     return data;
 };
+
+export const getUserDetails = async (userName: string): Promise<User> => {
+    const { data } = await api.get<User>(`${SERVER_URL}/api/users/${userName}`);
+    return data;
+};
+
+export const uploadPhoto = async (formData: FormData) => {
+    const { data } = await api.post(`${SERVER_URL}/api/users/upload-photo`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+    });
+    return data;
+};
