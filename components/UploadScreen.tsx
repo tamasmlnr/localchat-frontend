@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
 import { selectUser } from "@/store/selectors/authSelectors";
 import * as ImagePicker from "expo-image-picker";
-import { uploadPhoto } from "@/services/userService";
+import { replacePhoto, uploadPhoto } from "@/services/userService";
 import ThemedButton from "./ThemedButton";
 import { useGetUserDetails } from "@/hooks/queries/useGetUserDetails";
 
@@ -13,7 +13,7 @@ const UploadScreen = () => {
     const screenWidth = Dimensions.get("window").width;
     const imageIdFromUsername = userId?.replace(/[.@]/g, '');
 
-    const pickImage = async () => {
+    const handleImageUpload = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (status !== "granted") {
             alert("Permission to access gallery is required!");
@@ -58,9 +58,9 @@ const UploadScreen = () => {
     return (
         <View>
             <Image source={currentUser?.profilePhotoUrl ? { uri: currentUser?.profilePhotoUrl } : require("@/assets/images/avatar.png")} style={styles.image} />
-            {currentUser?.profilePhotoUrl ? <ThemedButton onPress={pickImage} disabled={isFetching}>Change profile picture</ThemedButton> :
+            {currentUser?.profilePhotoUrl ? <ThemedButton onPress={handleImageUpload} disabled={isFetching}>Change profile picture</ThemedButton> :
                 <>
-                    <ThemedButton onPress={pickImage} disabled={isFetching}>Upload profile picture</ThemedButton>
+                    <ThemedButton onPress={handleImageUpload} disabled={isFetching}>Upload profile picture</ThemedButton>
                 </>}
         </View >
     );
