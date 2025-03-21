@@ -31,20 +31,22 @@ export const SocketProvider: React.FC<SocketProviderProps> = ({ children }) => {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        const newSocket = io(SOCKET_SERVER_URL);
-        newSocket.emit("join", userId);
-        setSocket(newSocket);
+        if (userId) {
+            const newSocket = io(SOCKET_SERVER_URL);
+            newSocket.emit("join", userId);
+            setSocket(newSocket);
 
-        newSocket.on("receive-message", (message: Message) => {
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { ...message, _id: Date.now().toString(), createdAt: new Date().toISOString() },
-            ]);
-        });
+            newSocket.on("receive-message", (message: Message) => {
+                setMessages((prevMessages) => [
+                    ...prevMessages,
+                    { ...message, _id: Date.now().toString(), createdAt: new Date().toISOString() },
+                ]);
+            });
 
-        return () => {
-            newSocket.disconnect();
-        };
+            return () => {
+                newSocket.disconnect();
+            };
+        }
     }, [userId]);
 
     const sendMessage = (sender: string, receiver: string, content: string, conversationId: string) => {

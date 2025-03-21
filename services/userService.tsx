@@ -3,14 +3,8 @@ import api from "@/utils/axios/axiosInstance";
 
 
 export const loginUser = async (credentials: UserLoginInput): Promise<UserLoginResponse> => {
-    try {
-        // Force an error by sending to an invalid endpoint
-        const { data } = await api.post<UserLoginResponse>(`${SERVER_URL}/api/INVALID_ENDPOINT`, credentials);
-        return data;
-    } catch (error) {
-        console.error("LOGIN REQUEST FAILED:", error);
-        throw error;
-    }
+    const { data } = await api.post<UserLoginResponse>(`${SERVER_URL}/api/login`, credentials);
+    return data;
 
 };
 
