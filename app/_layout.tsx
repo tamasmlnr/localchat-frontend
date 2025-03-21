@@ -6,6 +6,7 @@ import { Provider, useSelector } from "react-redux";
 import { store } from "@/store";
 import { SocketProvider } from "../contexts/SocketContext";
 import { selectUser } from "@/store/selectors/authSelectors";
+import SnackbarComponent from "@/components/SnackbarComponent";
 
 export default function RootLayout() {
   const queryClient = new QueryClient();
@@ -15,6 +16,7 @@ export default function RootLayout() {
       <SocketProvider>
         <QueryClientProvider client={queryClient}>
           <PaperProvider theme={theme}>
+            <SnackbarComponent />
             <Stack screenOptions={{ headerShown: false }} />
           </PaperProvider>
         </QueryClientProvider>

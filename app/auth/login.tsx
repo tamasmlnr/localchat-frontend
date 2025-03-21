@@ -8,6 +8,9 @@ import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
 import ThemedTextInput from "@/components/ThemedTextInput";
 import { useLoginMutation } from "@/hooks/queries/useLoginMutation";
+import { useDispatch, useSelector } from "react-redux";
+import { selectState } from "@/store/selectors/sliceSelectors";
+import { showSnackbar } from "@/store/snackbarSlice";
 
 
 const schema = Yup.object({
@@ -15,7 +18,7 @@ const schema = Yup.object({
     password: Yup.string().required("Password is required"),
 });
 
-export default function LoginScreen() {
+const LoginScreen = () => {
     const { control, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({
         values: {
             username: "test@test.test",
@@ -24,6 +27,7 @@ export default function LoginScreen() {
         resolver: yupResolver(schema),
     });
     const loginMutation = useLoginMutation();
+    const dispatch = useDispatch();
 
     const { colors } = useTheme();
 
@@ -115,3 +119,4 @@ const styles = StyleSheet.create({
     },
 });
 
+export default LoginScreen;
