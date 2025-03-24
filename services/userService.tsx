@@ -29,3 +29,14 @@ export const uploadPhoto = async (formData: FormData) => {
     });
     return data;
 };
+
+export const updateUser = async (user: User) => {
+    const { data } = await api.put(
+        `${SERVER_URL}/api/users/${user.username}`,
+        user,
+        {
+            headers: { 'Content-Type': 'application/json' }
+        }
+    );
+    return data;
+};

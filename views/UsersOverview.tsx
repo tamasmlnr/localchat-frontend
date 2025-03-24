@@ -7,21 +7,48 @@ import { selectUser } from '@/store/selectors/authSelectors';
 import UserCard from '@/components/UserCard';
 import { theme } from '@/theme/theme';
 import { ThemedText } from '@/components/ThemedText';
+import * as Location from 'expo-location';
+import { useUpdateUserMutation } from '@/hooks/queries/useUpdateUserMutation';
+import { useGetUserDetails } from '@/hooks/queries/useGetUserDetails';
 
 const { width } = Dimensions.get('window');
 
 const UsersOverview = () => {
     const [isOnline, setIsOnline] = useState(false);
-    const { data: users = [], refetch } = useGetAllUsers(isOnline);
+    const { data: users = [] } = useGetAllUsers(isOnline);
     const currentUser = useSelector(selectUser);
     const filteredUsers = users.filter((user) => {
         return user.username !== currentUser;
     });
     const [animation] = useState(new Animated.Value(0));
+    const [errorMessage, setErrorMessage] = useState('');
+    const { mutate } = useUpdateUserMutation();
+    const { data: user } = useGetUserDetails(currentUser ?? '');
+
+    const updateLocation = async () => {
+        try {
+            const { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                setErrorMessage('Permission to access location was denied');
+                return;
+            }
+
+            const loc = await Location.getCurrentPositionAsync({});
+
+            mutate({ ...user, location: { latitude: loc.coords.latitude, longitude: loc.coords.longitude } } as User);
+        } catch (error) {
+            setErrorMessage('Error fetching location');
+        }
+    };
+
 
     const toggleOnlineStatus = () => {
         const newValue = !isOnline;
         setIsOnline(newValue);
+
+        if (newValue) {
+            updateLocation();
+        }
 
         Animated.timing(animation, {
             toValue: newValue ? 1 : 0,
