@@ -10,20 +10,22 @@ import { ThemedText } from '@/components/ThemedText';
 import * as Location from 'expo-location';
 import { useUpdateUserMutation } from '@/hooks/queries/useUpdateUserMutation';
 import { useGetUserDetails } from '@/hooks/queries/useGetUserDetails';
+import { useGetNearbyUsers } from '@/hooks/queries/useGetNearbyUsers';
 
 const { width } = Dimensions.get('window');
 
 const UsersOverview = () => {
     const [isOnline, setIsOnline] = useState(false);
-    const { data: users = [] } = useGetAllUsers(isOnline);
     const currentUser = useSelector(selectUser);
+    const [animation] = useState(new Animated.Value(0));
+    const [errorMessage, setErrorMessage] = useState('');
+    const { mutate, isSuccess } = useUpdateUserMutation();
+    const { data: user } = useGetUserDetails(currentUser ?? '');
+    const { data: users = [] } = useGetNearbyUsers(isOnline, user?.location?.coordinates?.[0], user?.location?.coordinates?.[1]);
     const filteredUsers = users.filter((user) => {
         return user.username !== currentUser;
     });
-    const [animation] = useState(new Animated.Value(0));
-    const [errorMessage, setErrorMessage] = useState('');
-    const { mutate } = useUpdateUserMutation();
-    const { data: user } = useGetUserDetails(currentUser ?? '');
+    console.log(users);
 
     const updateLocation = async () => {
         try {
@@ -35,7 +37,7 @@ const UsersOverview = () => {
 
             const loc = await Location.getCurrentPositionAsync({});
 
-            mutate({ ...user, location: { latitude: loc.coords.latitude, longitude: loc.coords.longitude } } as User);
+            mutate({ ...user, location: { type: "Point", coordinates: [loc.coords.longitude, loc.coords.latitude] } } as User);
         } catch (error) {
             setErrorMessage('Error fetching location');
         }

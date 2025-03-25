@@ -14,7 +14,7 @@ type User = {
     _id: string
     profilePhotoUrl: string;
     location: {
-        latitude: number,
-        longitude: number
+        coordinates: number[]
     },
+    distance?: number
 };

@@ -18,6 +18,11 @@ export const getAllUsers = async (): Promise<User[]> => {
     return data;
 };
 
+export const getNearbyUsers = async (latitude: number, longitude: number): Promise<User[]> => {
+    const { data } = await api.get<User[]>(`${SERVER_URL}/api/users/near-location?latitude=${latitude}&longitude=${longitude}}`);
+    return data;
+};
+
 export const getUserDetails = async (userName: string): Promise<User> => {
     const { data } = await api.get<User>(`${SERVER_URL}/api/users/${userName}`);
     return data;
@@ -31,6 +36,7 @@ export const uploadPhoto = async (formData: FormData) => {
 };
 
 export const updateUser = async (user: User) => {
+    console.log("update", user);
     const { data } = await api.put(
         `${SERVER_URL}/api/users/${user.username}`,
         user,

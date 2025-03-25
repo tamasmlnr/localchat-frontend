@@ -8,8 +8,7 @@ import ProfilePhotoIcon from './ProfilePhotoIcon';
 import { useGetUserDetails } from '@/hooks/queries/useGetUserDetails';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
-import calculateDistance from '@/utils/axios/distanceUtils';
-
+import { formatDistanceInKm } from '@/utils/axios/distanceUtils';
 
 interface UsercardProps {
     user: User;
@@ -20,7 +19,6 @@ const UserCard = ({ user }: UsercardProps) => {
     const router = useRouter();
     const currentUserId = useSelector(selectUser);
     const { data: currentUserDetails } = useGetUserDetails(currentUserId ?? '');
-    console.log(currentUserDetails?.location);
 
     const handleMessagePress = () => {
         router.push({
@@ -33,43 +31,59 @@ const UserCard = ({ user }: UsercardProps) => {
         <View style={styles.container}>
             <Card>
                 <Card.Content style={styles.cardContent}>
-                    <ProfilePhotoIcon size={50} source={user.profilePhotoUrl} />
-                    <View style={styles.textContainer}>
-                        <ThemedText color={theme.colors.tertiary}>{user?.name}</ThemedText>
+                    <View style={styles.topRow}>
+                        <ProfilePhotoIcon size={50} source={user.profilePhotoUrl} />
+                        <View style={styles.textContainer}>
+                            <ThemedText color={theme.colors.tertiary}>{user?.name}</ThemedText>
+                        </View>
+                        <IconButton
+                            icon="message"
+                            iconColor={theme.colors.primary}
+                            size={24}
+                            onPress={handleMessagePress}
+                            style={styles.icon}
+                        />
                     </View>
-                    <IconButton
-                        icon="message"
-                        iconColor={theme.colors.primary}
-                        size={24}
-                        onPress={handleMessagePress}
-                        style={styles.icon}
-                    />
-                </Card.Content>
-                <Card.Content style={styles.cardContent}>
-                    {user?.location && <Text>{calculateDistance(currentUserDetails?.location?.latitude, currentUserDetails?.location?.longitude, user?.location?.latitude, user?.location?.longitude)}</Text>}
+                    {user?.location && (
+                        <Text style={styles.distanceText}>
+                            {formatDistanceInKm(user?.distance)} km away
+                        </Text>
+                    )}
                 </Card.Content>
             </Card>
+
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        margin: 10,
+        marginVertical: 10,
+        backgroundColor: theme.colors.secondary,
+        borderRadius: 12,
     },
     cardContent: {
+        backgroundColor: theme.colors.secondary,
+        paddingVertical: 12,
+    },
+    topRow: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: theme.colors.secondary,
-        border: "0"
     },
     textContainer: {
         marginLeft: 10,
+        flex: 1,
     },
     icon: {
         marginLeft: 'auto',
     },
+    distanceText: {
+        marginTop: 4,
+        color: theme.colors.tertiary,
+        alignSelf: 'flex-start',
+    },
 });
+
 
 export default UserCard;
