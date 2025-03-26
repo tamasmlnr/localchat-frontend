@@ -23,8 +23,8 @@ const MessagePreview: React.FC<MessagePreviewProps> = ({ userIcon, userName, mes
 
 
     return (
-        <Pressable style={styles.container} onPress={handleMessageTouch}>
-            <Avatar.Image source={{ uri: userIcon }} size={40} style={styles.userIcon} />
+        <Pressable style={styles.container} onPress={handleMessageTouch} testID={`message-preview-${conversationId}`}>
+            <Avatar.Image source={{ uri: userIcon }} size={40} style={styles.userIcon} testID={`avatar-${userName}`} />
             <View style={styles.messageInfo}>
                 <Text style={styles.userName}>{userName}</Text>
                 <Text style={styles.messageText} numberOfLines={2}>

@@ -2,13 +2,13 @@ import React, { useRef, useState } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { TextInput, IconButton } from 'react-native-paper';
 import AnimatedMessage from './AnimatedMessage';
-import { useSendMessageMutation } from '../../hooks/queries/useSendMessageMutation';
 import { ThemedText } from '../ThemedText';
 import { theme } from '@/theme/theme';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
 import { useGetOrCreateConversations } from '@/hooks/queries/useGetConversationWithUser';
 import { useSocket } from '@/contexts/SocketContext';
+import { Message } from '@/types/Message';
 
 interface MessagingLayoutProps {
     recipientUsername?: string | undefined;
@@ -19,7 +19,7 @@ const MessagingLayout = ({ recipientUsername }: MessagingLayoutProps) => {
     const currentUser = useSelector(selectUser);
     const { sendMessage, messages: socketMessages } = useSocket();
     const { data: { messages = [], conversation } = {}, isLoading, isError } = useGetOrCreateConversations(currentUser, recipientUsername);
-    const combinedMessages = [...(messages || []), ...socketMessages];
+    const combinedMessages: Message[] = [...(messages || []), ...socketMessages];
     const flatListRef = useRef<FlatList>(null);
     const handleSend = () => {
         if (message.trim() && recipientUsername) {
@@ -28,7 +28,7 @@ const MessagingLayout = ({ recipientUsername }: MessagingLayoutProps) => {
         }
     };
 
-    const renderItem = ({ item, index }) => (
+    const renderItem = ({ item, index }: { item: Message, index: number }) => (
         <AnimatedMessage item={item} index={index} messagesLength={combinedMessages.length} />
     );
 

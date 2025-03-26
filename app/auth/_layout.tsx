@@ -1,8 +1,6 @@
-import { Stack, useRouter, useRootNavigationState } from "expo-router";
+import { Stack } from "expo-router";
 
 export default function AccountLayout() {
-    const router = useRouter();
-    const navigationState = useRootNavigationState();
 
     return (
         <Stack screenOptions={{ headerShown: true, gestureEnabled: true }}>

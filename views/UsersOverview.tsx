@@ -11,6 +11,8 @@ import * as Location from 'expo-location';
 import { useUpdateUserMutation } from '@/hooks/queries/useUpdateUserMutation';
 import { useGetUserDetails } from '@/hooks/queries/useGetUserDetails';
 import { useGetNearbyUsers } from '@/hooks/queries/useGetNearbyUsers';
+import { Coordinates } from '@/types/Coordinates';
+import { User } from '@/types/User';
 
 const { width } = Dimensions.get('window');
 
@@ -21,13 +23,11 @@ const UsersOverview = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { mutate, isSuccess } = useUpdateUserMutation();
     const { data: user } = useGetUserDetails(currentUser ?? '');
-    const [location, setLocation] = useState<{ longitude: number, latitude: number } | null>(null);
+    const [location, setLocation] = useState<Coordinates | null>(null);
     const { data: users = [], isFetching } = useGetNearbyUsers(isOnline, location?.longitude, location?.latitude);
     const filteredUsers = users.filter((user) => {
         return user.username !== currentUser;
     });
-    console.log("nearby", users);
-    console.log(location);
 
     const updateLocation = async () => {
         try {
@@ -38,7 +38,7 @@ const UsersOverview = () => {
             }
 
             const loc = await Location.getCurrentPositionAsync({});
-            const newLocation = { longitude: loc.coords.longitude, latitude: loc.coords.latitude };
+            const newLocation: Coordinates = { longitude: loc.coords.longitude, latitude: loc.coords.latitude };
             setLocation(newLocation);
 
             mutate({ ...user, location: { type: "Point", coordinates: [loc.coords.longitude, loc.coords.latitude] } } as User);

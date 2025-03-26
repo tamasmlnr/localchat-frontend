@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
-import { TextInput, Button, Text, useTheme } from "react-native-paper";
+import {  Button, Text, useTheme } from "react-native-paper";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -8,9 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
 import ThemedTextInput from "@/components/ThemedTextInput";
 import { useLoginMutation } from "@/hooks/queries/useLoginMutation";
-import { useDispatch, useSelector } from "react-redux";
-import { selectState } from "@/store/selectors/sliceSelectors";
-import { showSnackbar } from "@/store/snackbarSlice";
+import { UserLoginInput } from "@/types/User";
 
 
 const schema = Yup.object({
@@ -27,7 +25,6 @@ const LoginScreen = () => {
         resolver: yupResolver(schema),
     });
     const loginMutation = useLoginMutation();
-    const dispatch = useDispatch();
 
     const { colors } = useTheme();
 

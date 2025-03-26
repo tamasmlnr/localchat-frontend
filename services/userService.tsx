@@ -1,6 +1,6 @@
 import { SERVER_URL } from "@/constants/constants";
+import { User, UserLoginInput, UserLoginResponse } from "@/types/User";
 import api from "@/utils/axios/axiosInstance";
-
 
 export const loginUser = async (credentials: UserLoginInput): Promise<UserLoginResponse> => {
     const { data } = await api.post<UserLoginResponse>(`${SERVER_URL}/api/login`, credentials);
@@ -35,7 +35,7 @@ export const uploadPhoto = async (formData: FormData) => {
     return data;
 };
 
-export const updateUser = async (user: User) => {
+export const updateUser = async (user: User): Promise<User> => {
     console.log("update", user);
     const { data } = await api.put(
         `${SERVER_URL}/api/users/${user.username}`,

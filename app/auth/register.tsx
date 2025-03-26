@@ -8,7 +8,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
 import { useRegisterUser } from "@/hooks/queries/useRegisterMutation";
 
-interface IFormInput {
+interface LoginFormInput {
     name: string;
     email: string;
     password: string;
@@ -27,13 +27,13 @@ const schema = Yup.object({
 }).required();
 
 export default function RegisterScreen() {
-    const { control, handleSubmit, formState: { errors } } = useForm<IFormInput>({
+    const { control, handleSubmit, formState: { errors } } = useForm<LoginFormInput>({
         resolver: yupResolver(schema),
     });
     const { mutateAsync, isLoading, error } = useRegisterUser();
     const { colors } = useTheme();
 
-    const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    const onSubmit: SubmitHandler<LoginFormInput> = async (data) => {
         const userData = {
             username: data.email,
             password: data.password,
@@ -127,7 +127,7 @@ export default function RegisterScreen() {
 
             <Button
                 mode="contained"
-                onPress={handleSubmit(onSubmit)} // Handle form submission
+                onPress={handleSubmit(onSubmit)}
                 style={styles.button}
                 textColor={colors.secondary}
             >

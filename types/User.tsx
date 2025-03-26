@@ -1,14 +1,14 @@
-interface UserLoginInput {
+export interface UserLoginInput {
     username: string;
     password: string;
 }
 
-interface UserLoginResponse {
+export interface UserLoginResponse {
     username: string;
     token: string;
 }
 
-type User = {
+export type User = {
     username: string;
     name: string;
     _id: string
