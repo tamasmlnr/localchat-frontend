@@ -21,11 +21,13 @@ const UsersOverview = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const { mutate, isSuccess } = useUpdateUserMutation();
     const { data: user } = useGetUserDetails(currentUser ?? '');
-    const { data: users = [] } = useGetNearbyUsers(isOnline, user?.location?.coordinates?.[0], user?.location?.coordinates?.[1]);
+    const [location, setLocation] = useState<{ longitude: number, latitude: number } | null>(null);
+    const { data: users = [], isFetching } = useGetNearbyUsers(isOnline, location?.longitude, location?.latitude);
     const filteredUsers = users.filter((user) => {
         return user.username !== currentUser;
     });
-    console.log(users);
+    console.log("nearby", users);
+    console.log(location);
 
     const updateLocation = async () => {
         try {
@@ -36,6 +38,8 @@ const UsersOverview = () => {
             }
 
             const loc = await Location.getCurrentPositionAsync({});
+            const newLocation = { longitude: loc.coords.longitude, latitude: loc.coords.latitude };
+            setLocation(newLocation);
 
             mutate({ ...user, location: { type: "Point", coordinates: [loc.coords.longitude, loc.coords.latitude] } } as User);
         } catch (error) {

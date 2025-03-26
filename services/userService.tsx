@@ -18,8 +18,8 @@ export const getAllUsers = async (): Promise<User[]> => {
     return data;
 };
 
-export const getNearbyUsers = async (latitude: number, longitude: number): Promise<User[]> => {
-    const { data } = await api.get<User[]>(`${SERVER_URL}/api/users/near-location?latitude=${latitude}&longitude=${longitude}}`);
+export const getNearbyUsers = async (longitude: number, latitude: number): Promise<User[]> => {
+    const { data } = await api.get<User[]>(`${SERVER_URL}/api/users/near-location?longitude=${longitude}&latitude=${latitude}}`);
     return data;
 };
 
