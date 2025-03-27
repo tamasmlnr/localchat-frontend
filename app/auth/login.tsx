@@ -19,6 +19,7 @@ const schema = Yup.object({
 const LoginScreen = () => {
     const { control, handleSubmit, formState: { errors } } = useForm<UserLoginInput>({
         values: {
+            //TODO remove
             username: "test@test.test",
             password: "password"
         },
@@ -43,6 +44,7 @@ const LoginScreen = () => {
                     <ThemedTextInput
                         label="E-mail address"
                         value={value}
+                        id="email-field"
                         onChangeText={onChange}
                         mode="outlined"
                         style={[styles.input, { color: colors.primary }]}
@@ -63,6 +65,7 @@ const LoginScreen = () => {
                         onChangeText={onChange}
                         mode="outlined"
                         secureTextEntry
+                        id="password-field"
                         style={styles.input}
                         error={!!errors.password}
                         theme={{ colors: { text: "red" } }}
@@ -79,6 +82,7 @@ const LoginScreen = () => {
                 onPress={handleSubmit(onSubmit)}
                 style={styles.button}
                 textColor={colors.secondary}
+                testID="login-button"
             >
                 Log in
             </Button>

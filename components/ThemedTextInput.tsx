@@ -10,6 +10,7 @@ const ThemedTextInput = (props: TextInputProps) => {
         <TextInput
             {...props}
             textColor={colors.tertiary}
+            testID={props.id ?? `${props.label}-field`}
             style={styles.input}
         />
     );

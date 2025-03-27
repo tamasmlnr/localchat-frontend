@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import { ThemedText } from "@/components/ThemedText";
 import { theme } from "@/theme/theme";
 import { useRegisterUser } from "@/hooks/queries/useRegisterMutation";
+import ThemedTextInput from "@/components/ThemedTextInput";
 
 interface LoginFormInput {
     name: string;
@@ -30,7 +31,7 @@ export default function RegisterScreen() {
     const { control, handleSubmit, formState: { errors } } = useForm<LoginFormInput>({
         resolver: yupResolver(schema),
     });
-    const { mutateAsync, isLoading, error } = useRegisterUser();
+    const { mutateAsync } = useRegisterUser();
     const { colors } = useTheme();
 
     const onSubmit: SubmitHandler<LoginFormInput> = async (data) => {
@@ -55,9 +56,10 @@ export default function RegisterScreen() {
                 control={control}
                 name="email"
                 render={({ field: { onChange, value } }) => (
-                    <TextInput
+                    <ThemedTextInput
                         label="Email"
                         value={value}
+                        id="email-field"
                         onChangeText={onChange}
                         mode="outlined"
                         keyboardType="email-address"
@@ -74,9 +76,10 @@ export default function RegisterScreen() {
                 control={control}
                 name="name"
                 render={({ field: { onChange, value } }) => (
-                    <TextInput
+                    <ThemedTextInput
                         label="Full name"
                         value={value}
+                        id="fullname-field"
                         onChangeText={onChange}
                         mode="outlined"
                         style={[styles.input, { color: colors.primary }]}
@@ -91,9 +94,10 @@ export default function RegisterScreen() {
                 control={control}
                 name="password"
                 render={({ field: { onChange, value } }) => (
-                    <TextInput
+                    <ThemedTextInput
                         label="Password"
                         value={value}
+                        id="password-field"
                         onChangeText={onChange}
                         mode="outlined"
                         secureTextEntry
@@ -111,9 +115,10 @@ export default function RegisterScreen() {
                 control={control}
                 name="passwordConfirmation"
                 render={({ field: { onChange, value } }) => (
-                    <TextInput
+                    <ThemedTextInput
                         label="Password confirmation"
                         value={value}
+                        id="password-confirmation-field"
                         onChangeText={onChange}
                         mode="outlined"
                         secureTextEntry
