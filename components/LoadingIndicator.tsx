@@ -27,7 +27,7 @@ const LoadingIndicator = ({ size = 100, showText = true }: LoadingIndicatorProps
     });
 
     return (
-        <View style={[styles.container, { width: size, height: size }]}>
+        <View style={[styles.container, { width: size, height: size }]} id='loading-indicator' testID='loading-indicator'>
             <Animated.Text
                 style={[
                     styles.sunEmoji,

@@ -6,7 +6,7 @@ const ThemedButton: React.FC<ButtonProps> = ({ children, ...props }) => {
     const theme = useTheme();
 
     return (
-        <Button {...props} style={styles.button} mode="contained" textColor={theme.colors.secondary}>
+        <Button {...props} style={styles.button} mode="contained" textColor={theme.colors.secondary} testID={props.id}>
             {children}
         </Button>
     );

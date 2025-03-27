@@ -78,6 +78,7 @@ const PhotoUpload = () => {
             )}
             {currentUser?.profilePhotoUrl ? (
                 <ThemedButton
+                    id="update-photo-button"
                     onPress={handleImageUpload}
                     disabled={isFetching}
                 >
@@ -87,6 +88,7 @@ const PhotoUpload = () => {
                 <ThemedButton
                     onPress={handleImageUpload}
                     disabled={isFetching}
+                    id="upload-photo-button"
                 >
                     Upload profile picture
                 </ThemedButton>
