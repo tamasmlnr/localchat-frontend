@@ -36,7 +36,6 @@ export const uploadPhoto = async (formData: FormData) => {
 };
 
 export const updateUser = async (user: User): Promise<User> => {
-    console.log("update", user);
     const { data } = await api.put(
         `${SERVER_URL}/api/users/${user.username}`,
         user,
