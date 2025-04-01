@@ -1,8 +1,8 @@
 import { getNearbyUsers } from "@/services/userService";
+import { User } from "@/types/User";
 import { useQuery } from "react-query";
 
 export const useGetNearbyUsers = (isEnabled: boolean, longitude?: number, latitude?: number) => {
-    console.log("loc", longitude, ",", latitude);
     return useQuery<User[], Error>({
         queryKey: ["nearby-users", longitude, latitude],
         queryFn: () => {

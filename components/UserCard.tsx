@@ -9,6 +9,7 @@ import { useGetUserDetails } from '@/hooks/queries/useGetUserDetails';
 import { useSelector } from 'react-redux';
 import { selectUser } from '@/store/selectors/authSelectors';
 import { formatDistanceInKm } from '@/utils/axios/distanceUtils';
+import { User } from '@/types/User';
 
 interface UsercardProps {
     user: User;
@@ -17,8 +18,6 @@ interface UsercardProps {
 const UserCard = ({ user }: UsercardProps) => {
     const theme = useTheme();
     const router = useRouter();
-    const currentUserId = useSelector(selectUser);
-    const { data: currentUserDetails } = useGetUserDetails(currentUserId ?? '');
 
     const handleMessagePress = () => {
         router.push({

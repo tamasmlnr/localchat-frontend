@@ -1,6 +1,6 @@
 import { Message } from "./Message";
 
-export type Conversation2 = {
+export type Conversation = {
     _id: string,
     users: string[],
     userDetails: [
